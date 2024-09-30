@@ -40,7 +40,7 @@ echo 'LANG=en_US.UTF-8' | tee /mnt/etc/locale.conf > /dev/null
 echo 'ArchBox' | tee /mnt/etc/hostname > /dev/null
 
 mkdir -p /mnt/etc/cmdline.d
-echo 'rw' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
+echo 'rw quiet' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
 
 tee /mnt/etc/mkinitcpio.d/linux.preset > /dev/null << EOF
 # mkinitcpio preset file for the 'linux' package
@@ -53,7 +53,7 @@ PRESETS=('default')
 #default_config="/etc/mkinitcpio.conf"
 #default_image="/boot/initramfs-linux.img"
 default_uki="/efi/EFI/Linux/arch-linux.efi"
-default_options=""
+default_options="--splash=/usr/share/systemd/bootctl/splash-arch.bmp"
 EOF
 
 tee /mnt/etc/mkinitcpio.conf > /dev/null << EOF
