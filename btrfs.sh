@@ -9,7 +9,7 @@ EFIPART=1
 
 btrfs_fs () {
     mkfs.btrfs $ROOT
-    mount -o noatime,compress-force=zstd:1 $ROOT /mnt
+    mount -o compress-force=zstd:1 $ROOT /mnt
     mount --mkdir $EFI /mnt/efi
 }
 
