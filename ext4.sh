@@ -98,7 +98,7 @@ install_de () {
     kdeplasma-addons \
     plasma-nm \
     plasma-pa \
-    sddm-kcm \
+    sddm \
     xdg-desktop-portal-kde \
     xdg-desktop-portal-gtk \
     kitty \
@@ -114,7 +114,9 @@ install_de () {
     filelight \
     firefox \
     base-devel \
-    git
+    git \
+    plasma-disks \
+    kinfocenter
 
     systemctl enable sddm.service --root=/mnt
 }
