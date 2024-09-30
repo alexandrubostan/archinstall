@@ -37,7 +37,7 @@ arch-chroot /mnt hwclock --systohc
 arch-chroot /mnt locale-gen
 
 echo 'LANG=en_US.UTF-8' | tee /mnt/etc/locale.conf > /dev/null
-echo 'archbox' | tee /mnt/etc/hostname > /dev/null
+echo 'ArchBox' | tee /mnt/etc/hostname > /dev/null
 
 mkdir -p /mnt/etc/cmdline.d
 echo 'rw' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
@@ -78,8 +78,8 @@ systemd_boot () {
     arch-chroot /mnt mkinitcpio -p linux
 }
 
-systemd_boot
-#efistub
+#systemd_boot
+efistub
 
 systemctl enable NetworkManager.service --root=/mnt
 systemctl enable fstrim.timer --root=/mnt
@@ -98,14 +98,13 @@ install_de () {
     kdeplasma-addons \
     plasma-nm \
     plasma-pa \
+    plasma-disks \
     sddm \
     xdg-desktop-portal-kde \
     xdg-desktop-portal-gtk \
     kitty \
     dolphin \
     pipewire-alsa \
-    libva-mesa-driver \
-    vulkan-radeon \
     flatpak \
     htop \
     nvtop \
@@ -114,11 +113,16 @@ install_de () {
     filelight \
     firefox \
     base-devel \
-    git \
-    plasma-disks \
-    kinfocenter
+    git
 
     systemctl enable sddm.service --root=/mnt
 }
 
+install_hwaccel () {
+    arch-chroot /mnt pacman -S --needed \
+    libva-mesa-driver \
+    vulkan-radeon
+}
+
 install_de
+install_hwaccel
