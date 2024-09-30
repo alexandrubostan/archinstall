@@ -40,7 +40,7 @@ echo 'LANG=en_US.UTF-8' | tee /mnt/etc/locale.conf > /dev/null
 echo 'ArchBox' | tee /mnt/etc/hostname > /dev/null
 
 mkdir -p /mnt/etc/cmdline.d
-echo 'rw quiet' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
+echo 'rootflags=rw,noatime rw quiet' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
 
 tee /mnt/etc/mkinitcpio.d/linux.preset > /dev/null << EOF
 # mkinitcpio preset file for the 'linux' package
