@@ -75,8 +75,7 @@ efistub
 systemctl enable NetworkManager.service --root=/mnt
 systemctl enable fstrim.timer --root=/mnt
 
-install_de () {
-    # KDE Plasma
+install_kde () {
     arch-chroot /mnt pacman -S --needed \
     plasma-desktop \
     breeze-gtk \
@@ -109,11 +108,29 @@ install_de () {
     systemctl enable sddm.service --root=/mnt
 }
 
-install_hwaccel () {
+install_hyprland () {
     arch-chroot /mnt pacman -S --needed \
-    libva-mesa-driver \
-    vulkan-radeon
+    firefox \
+    base-devel \
+    git \
+    hyprland \
+    sddm \
+    mako \
+    pipewire \
+    pipewire-alsa \
+    wireplumber \
+    alsa-utils \
+    xdg-desktop-portal-hyprland \
+    xdg-desktop-portal-gtk \
+    polkit-kde-agent \
+    kitty \
+    nautilus \
+    gnome-keyring \
+    baobab \
+    calc
+    
+    systemctl enable sddm.service --root=/mnt
 }
 
-install_de
-install_hwaccel
+#install_kde
+install_hyprland
