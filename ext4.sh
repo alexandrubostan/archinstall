@@ -8,17 +8,17 @@ DRIVE='/dev/nvme0n1'
 EFIPART=1
 
 ext4_fs () {
-    mkfs.ext4 $ROOT
-    mount $ROOT /mnt
-    mount --mkdir $EFI /mnt/efi
+    mkfs.ext4 "$ROOT"
+    mount "$ROOT" /mnt
+    mount --mkdir "$EFI" /mnt/efi
 }
 
 ext4_luks_fs () {
-    cryptsetup luksFormat $ROOT
-    cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent open $ROOT root
+    cryptsetup luksFormat "$ROOT"
+    cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent open "$ROOT" root
     mkfs.ext4 /dev/mapper/root
     mount /dev/mapper/root /mnt
-    mount --mkdir $EFI /mnt/efi
+    mount --mkdir "$EFI" /mnt/efi
 }
 
 ext4_fs
@@ -84,24 +84,14 @@ efistub
 systemctl enable NetworkManager.service --root=/mnt
 systemctl enable fstrim.timer --root=/mnt
 
-install_de () {
-    # KDE Plasma
+arch-chroot /mnt passwd
+read -r -p "Enter username: " user
+arch-chroot /mnt useradd -m -G wheel "$user"
+arch-chroot /mnt passwd "$user"
+
+install_kde () {
     arch-chroot /mnt pacman -S --needed \
-    plasma-desktop \
-    breeze-gtk \
-    drkonqi \
-    kde-gtk-config \
-    kscreen \
-    ksshaskpass \
-    kwallet-pam \
-    kwrited \
-    kdeplasma-addons \
-    plasma-nm \
-    plasma-pa \
-    plasma-disks \
-    sddm \
-    xdg-desktop-portal-kde \
-    xdg-desktop-portal-gtk \
+    plasma-meta \
     kitty \
     dolphin \
     pipewire-alsa \
@@ -118,11 +108,4 @@ install_de () {
     systemctl enable sddm.service --root=/mnt
 }
 
-install_hwaccel () {
-    arch-chroot /mnt pacman -S --needed \
-    libva-mesa-driver \
-    vulkan-radeon
-}
-
-install_de
-install_hwaccel
+install_kde
