@@ -24,7 +24,7 @@ ext4_luks_fs () {
 ext4_fs
 #ext4_luks_fs
 
-pacstrap -K /mnt base linux linux-firmware vim sudo networkmanager amd-ucode
+pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode
 
 echo '%wheel      ALL=(ALL:ALL) NOPASSWD: ALL' | tee -a /mnt/etc/sudoers > /dev/null
 
@@ -81,9 +81,6 @@ systemd_boot () {
 #systemd_boot
 efistub
 
-systemctl enable NetworkManager.service --root=/mnt
-systemctl enable fstrim.timer --root=/mnt
-
 arch-chroot /mnt passwd
 read -r -p "Enter username: " user
 arch-chroot /mnt useradd -m -G wheel "$user"
@@ -106,6 +103,9 @@ install_kde () {
     git
 
     systemctl enable sddm.service --root=/mnt
+    systemctl enable NetworkManager.service --root=/mnt
 }
 
 install_kde
+
+systemctl enable fstrim.timer --root=/mnt
