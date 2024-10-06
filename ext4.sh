@@ -24,7 +24,7 @@ ext4_luks_fs () {
 ext4_fs
 #ext4_luks_fs
 
-pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode
+pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode base-devel git
 
 echo '%wheel      ALL=(ALL:ALL) NOPASSWD: ALL' | tee -a /mnt/etc/sudoers > /dev/null
 
@@ -98,14 +98,53 @@ install_kde () {
     calc \
     kate \
     filelight \
-    firefox \
-    base-devel \
-    git
+    firefox
 
     systemctl enable sddm.service --root=/mnt
     systemctl enable NetworkManager.service --root=/mnt
 }
 
-install_kde
+install_gnome () {
+    arch-chroot /mnt pacman -S --needed \
+    baobab \
+    gdm \
+    gnome-calendar \
+    gnome-characters \
+    gnome-clocks \
+    gnome-console \
+    gnome-control-center \
+    gnome-disk-utility \
+    gnome-font-viewer \
+    gnome-keyring \
+    gnome-logs \
+    gnome-session \
+    gnome-settings-daemon \
+    gnome-shell \
+    gnome-tweaks \
+    gnome-system-monitor \
+    gnome-text-editor \
+    grilo-plugins \
+    gvfs \
+    gvfs-mtp \
+    loupe \
+    malcontent \
+    nautilus \
+    sushi \
+    tecla \
+    xdg-desktop-portal-gnome \
+    xdg-user-dirs-gtk \
+    firefox \
+    pipewire-alsa \
+    flatpak \
+    htop \
+    nvtop \
+    calc
+
+    systemctl enable gdm.service --root=/mnt
+    systemctl enable NetworkManager.service --root=/mnt
+}
+
+#install_kde
+install_gnome
 
 systemctl enable fstrim.timer --root=/mnt
