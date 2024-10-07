@@ -24,7 +24,7 @@ ext4_luks_fs () {
 ext4_fs
 #ext4_luks_fs
 
-pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode base-devel git
+pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode
 
 echo '%wheel      ALL=(ALL:ALL) NOPASSWD: ALL' | tee -a /mnt/etc/sudoers > /dev/null
 
@@ -81,11 +81,6 @@ systemd_boot () {
 #systemd_boot
 efistub
 
-arch-chroot /mnt passwd
-read -r -p "Enter username: " user
-arch-chroot /mnt useradd -m -G wheel "$user"
-arch-chroot /mnt passwd "$user"
-
 install_kde () {
     arch-chroot /mnt pacman -S --needed \
     plasma-meta \
@@ -138,7 +133,8 @@ install_gnome () {
     flatpak \
     htop \
     nvtop \
-    calc
+    calc \
+    networkmanager
 
     systemctl enable gdm.service --root=/mnt
     systemctl enable NetworkManager.service --root=/mnt
@@ -148,3 +144,8 @@ install_gnome () {
 install_gnome
 
 systemctl enable fstrim.timer --root=/mnt
+
+arch-chroot /mnt passwd
+read -r -p "Enter username: " user
+arch-chroot /mnt useradd -m -G wheel "$user"
+arch-chroot /mnt passwd "$user"
