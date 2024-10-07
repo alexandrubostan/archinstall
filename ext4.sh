@@ -24,7 +24,7 @@ ext4_luks_fs () {
 ext4_fs
 #ext4_luks_fs
 
-pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode
+pacstrap -K /mnt base linux linux-firmware vim sudo amd-ucode networkmanager
 
 echo '%wheel      ALL=(ALL:ALL) NOPASSWD: ALL' | tee -a /mnt/etc/sudoers > /dev/null
 
@@ -83,20 +83,36 @@ efistub
 
 install_kde () {
     arch-chroot /mnt pacman -S --needed \
-    plasma-meta \
+    breeze-gtk \
+    drkonqi \
+    kde-gtk-config \
+    kdeplasma-addons \
+    kgamma \
+    kinfocenter \
+    kscreen \
+    ksshaskpass \
+    kwallet-pam \
+    kwrited \
+    plasma-desktop \
+    plasma-disks \
+    plasma-firewall \
+    plasma-nm \
+    plasma-pa \
+    plasma-systemmonitor \
+    powerdevil \
+    power-profiles-daemon \
+    sddm-kcm \
+    xdg-desktop-portal-kde \
+    xdg-desktop-portal-gtk \
+    ufw \
     kitty \
     dolphin \
-    pipewire-alsa \
-    flatpak \
-    htop \
-    nvtop \
-    calc \
     kate \
     filelight \
-    firefox
-
+    ark \
+    p7zip
+    
     systemctl enable sddm.service --root=/mnt
-    systemctl enable NetworkManager.service --root=/mnt
 }
 
 install_gnome () {
@@ -127,23 +143,27 @@ install_gnome () {
     sushi \
     tecla \
     xdg-desktop-portal-gnome \
-    xdg-user-dirs-gtk \
+    xdg-user-dirs-gtk
+    
+    systemctl enable gdm.service --root=/mnt
+}
+
+install_apps () {
+    arch-chroot /mnt pacman -S --needed \
     firefox \
     pipewire-alsa \
     flatpak \
     htop \
     nvtop \
-    calc \
-    networkmanager
-
-    systemctl enable gdm.service --root=/mnt
-    systemctl enable NetworkManager.service --root=/mnt
+    calc
 }
 
-#install_kde
-install_gnome
+install_kde
+#install_gnome
+install_apps
 
 systemctl enable fstrim.timer --root=/mnt
+systemctl enable NetworkManager.service --root=/mnt
 
 arch-chroot /mnt passwd
 read -r -p "Enter username: " user
