@@ -40,7 +40,7 @@ echo 'LANG=en_US.UTF-8' | tee /mnt/etc/locale.conf > /dev/null
 echo 'ArchBox' | tee /mnt/etc/hostname > /dev/null
 
 mkdir -p /mnt/etc/cmdline.d
-echo 'rootflags=rw,noatime rw quiet' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
+echo 'rootflags=defaults,noatime rw quiet' | tee /mnt/etc/cmdline.d/root.conf > /dev/null
 
 tee /mnt/etc/mkinitcpio.d/linux.preset > /dev/null << EOF
 # mkinitcpio preset file for the 'linux' package
@@ -78,8 +78,8 @@ systemd_boot () {
     arch-chroot /mnt mkinitcpio -p linux
 }
 
-#systemd_boot
-efistub
+systemd_boot
+#efistub
 
 install_kde () {
     arch-chroot /mnt pacman -S --needed \
